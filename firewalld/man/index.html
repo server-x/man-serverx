@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Server-X | Manual</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="bear-note-unique-identifier" content="0C1EBD1D-6ED3-4928-896C-C4FD46B04CF3-5194-00015558A53CB1C5"
+        <meta name="created" content="2020-03-22T19:54:44-0400"/>
+        <meta name="modified" content="2020-03-22T20:43:35-0400"/>
+        <meta name="tags" content=""/>
+        <meta name="last device" content="iMac"/>
+    </head>
+    <body>
+        <div class="note-wrapper">
+            <h1 id="Server-X | Manual">Server-X | Manual</h1>
+<br>
+<h1 id="firewall-cmd [firewalld]">firewall-cmd [firewalld]</h1>
+<hr>
+<br>
+<h1 id="Synopsis">Synopsis</h1>
+<p>firewall-cmd [OPTIONS…]</p>
+<br>
+<h1 id="Description">Description</h1>
+<p>firewall-cmd is the command line client of the firewalld daemon./ It provides interface to manage runtime and permanent configuration./</p>
+<p>The runtime configuration in firewalld is separated from the permanent configuration./ This means that things can get changed in the runtime or permanent configuration./</p>
+<br>
+<h1 id="Options">Options</h1>
+<br>
+<h3 id="General Options">General Options</h3>
+<p><code class='code-inline'>-h, —help</code></p>
+<p>	<i>Prints a short help text and exits.</i></p>
+<p><code class='code-inline'>-V, —version</code></p>
+<p>	<i>Print the version string of firewalld.</i> This option is not combinable with other options./</p>
+<p><code class='code-inline'>-q, —quiet</code></p>
+<p>	<i>Do not print status messages.</i></p>
+<br>
+<h3 id="Status Options">Status Options</h3>
+<p><code class='code-inline'>—state</code></p>
+<p>	<i>Check whether the firewalld daemon is active (i.</i>e./ running)./ </p>
+<br>
+<p><code class='code-inline'>—reload</code></p>
+<p>	<i>Reload firewall rules and keep state information. Current permanent configuration will become new runtime configuration, i.e. all runtime only changes done until reload are lost with reload if they have not been also in permanent configuration.</i></p>
+<br>
+<blockquote>
+<p>Note: Runtime changes applied via the direct interface are not affected and will therefore stay in place until firewalld daemon is restarted completely./</p>
+</blockquote>
+<br>
+<p><code class='code-inline'>—complete-reload</code></p>
+<p>	<i>Reload firewall completely, even netfilter kernel modules. This will most likely terminate active connections, because state information is lost.</i></p>
+<blockquote>
+<p>This option should only be used in case of severe firewall problems./ For example if there are state information problems that no connection can be established with correct firewall rules/</p>
+</blockquote>
+<br>
+<blockquote>
+<p>Note: Runtime changes applied via the direct interface are not affected and will therefore stay in place until firewalld daemon is restarted completely./</p>
+</blockquote>
+<br>
+<p><code class='code-inline'>—runtime-to-permanent</code></p>
+<br>
+<h3 id="Log Denied Options">Log Denied Options</h3>
+<p><code class='code-inline'>—get-log-denied</code></p>
+<p>	<i>Print the log denied setting.</i></p>
+<p><code class='code-inline'>—set-log-denied=/value/</code></p>
+<br>
+<h3 id="Automatic Helpers Options">Automatic Helpers Options</h3>
+<p><code class='code-inline'>—get-automatic-helpers</code></p>
+<p>	<i>Print the automatic helpers setting.</i></p>
+<p><code class='code-inline'>—set-automatic-helpers=/value/</code></p>
+<blockquote>
+<p>For the secure use of iptables and connection tracking helpers it is recommended to turn AutomaticHelpers off./ But this might have side effects on other services using the netfilter helpers as the sysctl setting in <i>proc</i>sys<i>net</i>netfilter<i>nf_conntrack_helper will be changed.</i> With the system setting, the default value set in the kernel or with sysctl will be used./ Possible values are: yes, no and system./ The default value is system./</p>
+</blockquote>
+<br>
+<br>
+<h3 id="Permanent Options">Permanent Options</h3>
+<p><code class='code-inline'>—permanent</code></p>
+<br>
+<h3 id="Zone Options">Zone Options</h3>
+<p><code class='code-inline'>—get-default-zone</code></p>
+<p>	<i>Print default zone for connections and interfaces.</i></p>
+<p><code class='code-inline'>—set-default-zone=zone</code></p>
+<p>	<i>Set default zone for connections and interfaces where no zone has been selected.</i> Setting the default zone changes the zone for the connections or interfaces, that are using the default zone./</p>
+<blockquote>
+<p>This is a runtime and permanent change./</p>
+</blockquote>
+<p><code class='code-inline'>—get-active-zones</code></p>
+<p>	<i>Print currently active zones altogether with interfaces and sources used in these zones.</i> Active zones are zones, that have a binding to an interface or source./ The output format is:</p>
+<pre><code class='code-multiline'>/zone1/
+  interfaces: /interface1/ /interface2/ ././
+  sources: /source1/ ././
+/zone2/
+  interfaces: /interface3/ ././
+/zone3/
+  sources: /source2/ ././</code></pre>
+<p><br></p>
+<blockquote>
+<p>If there are no interfaces or sources bound to the zone, the corresponding line will be omitted./</p>
+</blockquote>
+<p> <code class='code-inline'>—get-zones</code></p>
+<p>	<i>Print predefined zones as a space separated list.</i></p>
+<p> <code class='code-inline'>—get-services</code></p>
+<p>	<i>Print predefined services as a space separated list.</i></p>
+<p> <code class='code-inline'>—get-icmptypes</code></p>
+<p>	<i>Print predefined icmptypes as a space separated list.</i></p>
+<p> <code class='code-inline'>—get-zone-of-interface=/interface/</code></p>
+<p>	<i>Print the name of the zone the /interface</i> is bound to or <i>no zone</i>./</p>
+<p> <code class='code-inline'>—get-zone-of-source=/source/[//mask/]|/MAC/|ipset:/ipset/</code></p>
+<p>	<i>Print the name of the zone the source is bound to or /no zone</i>./</p>
+<p> <code class='code-inline'>—info-zone=zone</code></p>
+<p>	<i>Print information about the zone zone.</i> The output format is:</p>
+<pre><code class='code-multiline'>zone
+  interfaces: /interface1/ ././
+  sources: /source1/ ././
+  services: /service1/ ././
+  ports: /port1/ ././
+  protocols: /protocol1/ ././
+  forward-ports:
+        /forward-port1/
+        ././
+  source-ports: /source-port1/ ././
+  icmp-blocks: /icmp-type1/ ././
+  rich rules:
+        /rich-rule1/
+        ././
+</code></pre><code class='code-inline'>—list-all-zones</code>
+	<i>List everything added for or enabled in all zones.</i> The output format is:/
+<pre><code class='code-multiline'>/zone1/
+  interfaces: /interface1/ ././
+  sources: /source1/ ././
+  services: /service1/ ././
+  ports: /port1/ ././
+  protocols: /protocol1/ ././
+  forward-ports:
+        /forward-port1/
+        ././
+  icmp-blocks: /icmp-type1/ ././
+  rich rules:
+        /rich-rule1/
+        ././
+././
+</code></pre><code class='code-inline'>—permanent —new-zone=zone</code>
+	<i>Add a new permanent and empty zone.</i>
+<code class='code-inline'>—permanent —new-zone-from-file=/filename/ [</code>—name=zone]`
+	<i>Add a new permanent zone from a prepared zone file with an optional name override.</i>
+<code class='code-inline'>—permanent —delete-zone=zone</code>
+	<i>Delete an existing permanent zone.</i>
+<code class='code-inline'>—permanent —load-zone-defaults=zone</code>
+	<i>Load zone default settings or report NO_DEFAULTS error.</i>
+<code class='code-inline'>—permanent —path-zone=zone</code>
+	<i>Print path of the zone configuration file.</i>
+<code class='code-inline'>—permanent —zone=zone —set-description=/description/</code>
+	<i>Set new description to zone</i>
+<code class='code-inline'>—permanent —zone=zone —get-description</code>
+	<i>Print description for zone</i>
+<code class='code-inline'>—permanent —zone=zone —set-short=/description/</code>
+	<i>Set short description to zone</i>
+<code class='code-inline'>—permanent —zone=zone —get-short</code>
+	<i>Print short description for zone</i>
+<code class='code-inline'>—permanent —zone=zone —get-target</code>
+	<i>Get the target of a permanent zone.</i>
+<code class='code-inline'>—permanent —zone=zone —set-target=/target/</code>
+	<i>Set the target of a permanent zone.</i> <i>target</i> is one of: default, ACCEPT, DROP, REJECT/
+
+<h3 id="Options to Adapt and Query Zones">Options to Adapt and Query Zones</h3>
+Options in this section affect only one particular zone./ If used with <mark>`—zone=zone</mark> $OPTION, they affect the zone zone./ 
+<blockquote>
+If the option is omitted, they affect default zone (see <code class='code-inline'>—get-default-zone</code>)
+</blockquote>
+
+<code class='code-inline'>—list-all</code>
+	<i>List everything added for or enabled in zone.</i> If zone is omitted, default zone will be used./
+<code class='code-inline'>—list-services</code>
+	<i>List services added for zone as a space separated list.</i> If zone is omitted, default zone will be used./
+<code class='code-inline'>—add-service=/service/</code>
+
+<code class='code-inline'>—remove-service=/service/</code>
+	<i>Remove a service from zone.</i> This option can be specified multiple times./ If zone is omitted, default zone will be used./
+<code class='code-inline'>—query-service=/service/</code>
+	<i>Return whether /service</i> has been added for zone./ If zone is omitted, default zone will be used./ Returns 0 if true, 1 otherwise./
+<code class='code-inline'>—list-ports</code>
+	<i>List ports added for zone as a space separated list.</i> A port is of the form <i>portid</i>[-<i>portid</i>]protocol<i>, it can be either a port and protocol pair or a port range with a protocol.</i> If zone is omitted, default zone will be used./
+<code class='code-inline'>—add-port=/portid/[-/portid/]//protocol/</code>
+	<i>Add the port for zone.</i> If zone is omitted, default zone will be used./ 
+<code class='code-inline'>—remove-port=/portid/[-/portid/]//protocol/</code>
+	<i>Remove the port from zone.</i> If zone is omitted, default zone will be used./ This option can be specified multiple times./
+<code class='code-inline'>—query-port=/portid/[-/portid/]//protocol/</code>
+	<i>Return whether the port has been added for zone.</i> If zone is omitted, default zone will be used./ Returns 0 if true, 1 otherwise./
+<code class='code-inline'>—list-protocols</code>
+	<i>List protocols added for zone as a space separated list.</i> If zone is omitted, default zone will be used./
+
+<code class='code-inline'>—remove-protocol=/protocol/</code>
+	<i>Remove the protocol from zone.</i> If zone is omitted, default zone will be used./ This option can be specified multiple times./
+<code class='code-inline'>—query-protocol=/protocol/</code>
+	<i>Return whether the protocol has been added for zone.</i> If zone is omitted, default zone will be used./ Returns 0 if true, 1 otherwise./
+<code class='code-inline'>—list-source-ports</code>
+	<i>List source ports added for zone as a space separated list.</i> A port is of the form <i>portid</i>[-<i>portid</i>]protocol<i>.</i> If zone is omitted, default zone will be used./
+<code class='code-inline'>—add-source-port=/portid/[-/portid/]//protocol/</code>
+	<i>Add the source port for zone.</i> If zone is omitted, default zone will be used./
+<blockquote>
+The port can either be a single port number or a port range <i>portid</i>-<i>portid</i>./ The protocol can either be tcp, udp, sctp or dccp./
+</blockquote>
+
+<code class='code-inline'>—remove-source-port=/portid/[-/portid/]//protocol/</code>
+	<i>Remove the source port from zone.</i> If zone is omitted, default zone will be used./ This option can be specified multiple times./
+<code class='code-inline'>—query-source-port=/portid/[-/portid/]//protocol/</code>
+	<i>Return whether the source port has been added for zone.</i> If zone is omitted, default zone will be used./ Returns 0 if true, 1 otherwise./
+<code class='code-inline'>—list-icmp-blocks</code>
+	<i>List Internet Control Message Protocol (ICMP) type blocks added for zone as a space separated list.</i> If zone is omitted, default zone will be used./
+<code class='code-inline'>—add-icmp-block=/icmptype/</code>
+
+<code class='code-inline'>—remove-icmp-block=/icmptype/</code>
+	<i>Remove the ICMP block for icmptype from zone.</i> If zone is omitted, default zone will be used./ This option can be specified multiple times./
+<code class='code-inline'>—query-icmp-block=/icmptype/</code>
+	<i>Return whether an ICMP block for /icmptype</i> has been added for zone
+<code class='code-inline'>—list-forward-ports</code>
+	<i>List forward ports added for zone as a space separated list.</i> If zone is omitted, default zone will be used./
+<code class='code-inline'>—add-forward-port=port=</code>
+<code class='code-inline'>—remove-forward-port=port=</code>
+	<i>Remove the IPv4 forward port from zone If zone is omitted, default zone will be used.</i> This option can be specified multiple times./
+<code class='code-inline'>—query-forward-port=port=</code>
+	<i>Return whether the IPv4 forward port has been added for zone.</i> If zone is omitted, default zone will be used./ Returns 0 if true, 1 otherwise./
+<code class='code-inline'>—add-masquerade</code>
+
+
+<code class='code-inline'>—remove-masquerade</code>
+	<i>Disable IPv4 masquerade for zone.</i> If zone is omitted, default zone will be used./ If the masquerading was enabled with a timeout, it will be disabled also./
+
+<code class='code-inline'>—query-masquerade</code>
+	<i>Return whether IPv4 masquerading has been enabled for zone.</i> If zone is omitted, default zone will be used./ Returns 0 if true, 1 otherwise./
+
+<code class='code-inline'>—list-rich-rules</code>
+	<i>List rich language rules added for zone as a newline separated list</i>
+<code class='code-inline'>—add-rich-rule=‘/rule/‘ </code>
+<code class='code-inline'>—remove-rich-rule=‘/rule/‘</code>
+	<i>Remove rich language rule ‘rule from zone</i>
+<code class='code-inline'>—query-rich-rule=‘/rule/‘</code>
+
+<h3 id="Options to Handle Bindings of Interfaces">Options to Handle Bindings of Interfaces</h3>
+<mark>`—zone=zone</mark> $OPTION
+
+<blockquote>
+For a list of predefined zones use <code class='code-inline'>firewall-cmd </code>—get-zones`./
+</blockquote>
+
+<i>An interface name is a string up to 16 characters long, that may not contain ‘ ‘, ‘</i>‘, ‘!’ and ‘*’./
+
+<code class='code-inline'>—list-interfaces</code>
+	<i>List interfaces that are bound to zone zone as a space separated list.</i> If zone is omitted, default zone will be used./
+<code class='code-inline'>—add-interface=/interface/</code>
+	<i>Bind interface /interface</i> to zone zone./ If zone is omitted, default zone will be used./
+<code class='code-inline'>—zone=zone —change-interface=/interface/</code>
+	<i>If the interface is under control of NetworkManager, it is at first connected to change the zone for the connection that is using the interface.</i> If this fails, the zone binding is created in firewalld and the limitations below apply./ 
+<blockquote>
+For interfaces that are not under control of NetworkManager, firewalld tries to change the ZONE setting in the ifcfg file, if the file exists./
+</blockquote>
+<code class='code-inline'>—query-interface=/interface/</code>
+	<i>Query whether interface interface is bound to zone zone. Returns 0 if true, 1 otherwise.</i>
+ <code class='code-inline'>—remove-interface=/interface/</code>
+	<i>If the interface is under control of NetworkManager, it is at first connected to change the zone for the connection that is using the interface. If this fails, the zone binding is created in firewalld and the limitations below apply.</i>
+
+<h3 id="Options to Handle Bindings of Sources">Options to Handle Bindings of Sources</h3>
+<mark>`—zone=zone</mark> $OPTION
+
+Binding a source to a zone means that this zone settings will be used to restrict traffic from this source./
+
+A source address or address range is either an IP address or a network IP address with a mask for IPv4 or IPv6 or a MAC address or an ipset with the ipset: prefix./ For IPv4, the mask can be a network mask or a plain number./ 
+
+<blockquote>
+Options in this section affect only one particular zone./ If used with <code class='code-inline'>—zone=zone $OPTION</code>, <mark>they affect the zone zone./ If the option is omitted, they affect default zone</mark> 
+</blockquote>
+
+<code class='code-inline'>—list-sources</code>
+	<i>List sources that are bound to zone zone as a space separated list.</i> If zone is omitted, default zone will be used./
+<code class='code-inline'>—add-source=/source/[//mask/]|/MAC/|ipset:/ipset/</code>
+	<i>Bind the source to zone zone.</i> If zone is omitted, default zone will be used./
+
+<code class='code-inline'>—query-source=/source/[//mask/]|/MAC/|ipset:/ipset/</code>
+	<i>Query whether the source is bound to the zone zone.</i> Returns 0 if true, 1 otherwise./
+ <code class='code-inline'>—remove-source=/source/[//mask/]|/MAC/|ipset:/ipset/</code>
+	<i>Remove binding of the source from zone it was previously added to.</i>
+<h3 id="IPSet Options">IPSet Options</h3>
+<code class='code-inline'>—get-ipset-types</code>
+	<i>Print the supported ipset types.</i>
+<code class='code-inline'>—permanent —new-ipset=/ipset/ —type=/type/</code>
+	<i>Add a new permanent and empty ipset with specifying the type and optional the family and options like timeout, hashsize and maxelem.</i> For more information please have a look at ipset(8) man page./
+<code class='code-inline'>—permanent —new-ipset-from-file=/filename/</code>
+	<i>Add a new permanent ipset from a prepared ipset file with an optional name override.</i>
+<code class='code-inline'>—permanent —delete-ipset=/ipset/</code>
+	<i>Delete an existing permanent ipset.</i>
+<code class='code-inline'>—permanent —load-ipset-defaults=/ipset/</code>
+	<i>Load ipset default settings or report NO_DEFAULTS error.</i>
+ <code class='code-inline'>—info-ipset=/ipset/</code>
+	<i>Print information about the ipset /ipset</i>./ The output format is:
+<pre><code class='code-multiline'>/ipset/
+  type: /type/
+  options: /option1[=value1]/ ././
+  entries: /entry1/ ././
+</code></pre> <code class='code-inline'>—get-ipsets</code>
+	<i>Print predefined ipsets as a space separated list.</i>
+<code class='code-inline'>—permanent —ipset=/ipset/ —set-description=/description/</code>
+	/Set new description to ipset
+<code class='code-inline'>—permanent —ipset=/ipset/ —get-description</code>
+	/Print description for ipset
+<code class='code-inline'>—permanent —ipset=/ipset/ —set-short=/description/</code>
+	/Set short description to ipset
+<code class='code-inline'>—permanent —ipset=/ipset/ —get-short</code>
+	/Print short description for ipset
+ <code class='code-inline'>—ipset=/ipset/ —add-entry=/entry/</code>
+	<i>Add a new entry to the ipset.</i>
+<blockquote>
+Adding an entry to an ipset with option timeout is permitted, but these entries are not tracked by firewalld./
+</blockquote>
+ <code class='code-inline'>—ipset=/ipset/ —remove-entry=/entry/</code>
+	<i>Remove an entry from the ipset.</i>
+ <code class='code-inline'>—ipset=/ipset/ —query-entry=/entry/</code>
+	<i>Return whether the entry has been added to an ipset.</i> Returns 0 if true, 1 otherwise./
+<blockquote>
+Querying an ipset with a timeout will yield an error./ Entries are not tracked for ipsets with a timeout.
+</blockquote>
+ <code class='code-inline'>—ipset=/ipset/ —get-entries</code>
+List all entries of the ipset./
+ <code class='code-inline'>—ipset=/ipset/ —add-entries-from-file=/filename/</code>
+	<i>Add a new entries to the ipset from the file.</i> For all entries that are listed in the file but already in the ipset, a warning will be printed./
+<blockquote>
+The file should contain an entry per line./ Lines starting with an hash or semicolon are ignored./ Also empty lines./
+</blockquote>
+ <code class='code-inline'>—ipset=/ipset/ —remove-entries-from-file=/filename/</code>
+	<i>Remove existing entries from the ipset from the file. For all entries that are listed in the file but not in the ipset, a warning will be printed.</i>
+<blockquote>
+The file should contain an entry per line./ Lines starting with an hash or semicolon are ignored./ Also empty lines./
+</blockquote>
+<code class='code-inline'>—permanent —path-ipset=/ipset/</code>
+	<i>Print path of the ipset configuration file.</i>
+<h3 id="Service Options">Service Options</h3>
+Options in this section affect only one particular service./
+ <code class='code-inline'>—info-service=/service/</code>
+Print information about the service <i>service</i>./ The output format is:
+<pre><code class='code-multiline'>/service/
+  ports: /port1/ ././
+  protocols: /protocol1/ ././
+  source-ports: /source-port1/ ././
+  modules: /module1/ ././
+  destination: /ipv1/:/address1/ ././
+</code></pre>The following options are only usable in the permanent configuration./
+<code class='code-inline'>—permanent —new-service=/service/</code>
+	Add a new permanent and empty service./
+<code class='code-inline'>—permanent —new-service-from-file=/filename/ [</code>—name=<i>service</i>]
+	Add a new permanent service from a prepared service file with an optional name override./
+<code class='code-inline'>—permanent —delete-service=/service/</code>
+	Delete an existing permanent service./
+<code class='code-inline'>—permanent —load-service-defaults=/service/</code>
+	Load service default settings or report NO_DEFAULTS error./
+<code class='code-inline'>—permanent —path-service=/service/</code>
+	Print path of the service configuration file./
+<code class='code-inline'>—permanent —service=/service/ —set-description=/description/</code>
+	Set new description to service
+<code class='code-inline'>—permanent —service=/service/ —get-description</code>
+	Print description for service
+<code class='code-inline'>—permanent —service=/service/ —set-short=/description/</code>
+	Set short description to service
+<code class='code-inline'>—permanent —service=/service/ —get-short</code>
+	Print short description for service
+<code class='code-inline'>—permanent —service=/service/ —add-port=/portid/[-/portid/]//protocol/</code>
+	Add a new port to the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —remove-port=/portid/[-/portid/]//protocol/</code>
+	Remove a port from the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —query-port=/portid/[-/portid/]//protocol/</code>
+	Return wether the port has been added to the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —get-ports</code>
+	List ports added to the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —add-protocol=/protocol/</code>
+	Add a new protocol to the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —remove-protocol=/protocol/</code>
+	Remove a protocol from the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —query-protocol=/protocol/</code>
+	Return wether the protocol has been added to the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —get-protocols</code>
+	List protocols added to the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —add-source-port=/portid/[-/portid/]//protocol/</code>
+	Add a new source port to the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —remove-source-port=/portid/[-/portid/]//protocol/</code>
+	Remove a source port from the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —query-source-port=/portid/[-/portid/]//protocol/</code>
+	Return wether the source port has been added to the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —get-source-ports</code>
+	List source ports added to the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —add-module=/module/</code>
+	Add a new module to the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —remove-module=/module/</code>
+	<i>Remove a module from the permanent service.</i>
+<code class='code-inline'>—permanent —service=/service/ —query-module=/module/</code>
+	<i>Return wether the module has been added to the permanent service.</i>
+<code class='code-inline'>—permanent —service=/service/ —get-modules</code>
+	<i>List modules added to the permanent service.</i>
+<code class='code-inline'>—permanent —service=/service/ —set-destination=/ipv/:/address/[//mask/]</code>
+	<i>Set destination for ipv to address[</i>mask] in the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —remove-destination=/ipv/</code>
+	<i>Remove the destination for ipv from the permanent service.</i>
+<code class='code-inline'>—permanent —service=/service/ —query-destination=/ipv/:/address/[//mask/]</code>
+	<i>Return wether the destination ipv to address[</i>mask] has been set in the permanent service./
+<code class='code-inline'>—permanent —service=/service/ —get-destinations</code>
+	<i>List destinations added to the permanent service.</i>
+<h3 id="Helper Options">Helper Options</h3>
+Options in this section affect only one particular helper./
+ <code class='code-inline'>—info-helper=/helper/</code>
+	<i>Print information about the helper /helper</i>./ The output format is:
+<pre><code class='code-multiline'>/helper/
+  family: /family/
+  module: /module/
+  ports: /port1/ ././
+</code></pre>The following options are only usable in the permanent configuration./
+<code class='code-inline'>—permanent —new-helper=/helper/ —module=/nf_conntrack_module/ —family=ipv4|ipv6</code>
+	<i>Add a new permanent helper with module and optionally family defined.</i>
+<code class='code-inline'>—permanent —new-helper-from-file=/filename/ [</code>—name=<i>helper</i>]
+	<i>Add a new permanent helper from a prepared helper file with an optional name override.</i>
+<code class='code-inline'>—permanent —delete-helper=/helper/</code>
+	<i>Delete an existing permanent helper.</i>
+<code class='code-inline'>—permanent —load-helper-defaults=/helper/</code>
+	<i>Load helper default settings or report NO_DEFAULTS error.</i>
+<code class='code-inline'>—permanent —path-helper=/helper/</code>
+	<i>Print path of the helper configuration file.</i>
+ <code class='code-inline'>—get-helpers</code>
+	<i>Print predefined helpers as a space separated list.</i>
+<code class='code-inline'>—permanent —helper=/helper/ —set-description=/description/</code>
+	/Set new description to helper
+<code class='code-inline'>—permanent —helper=/helper/ —get-description</code>
+	/Print description for helper
+<code class='code-inline'>—permanent —helper=/helper/ —set-short=/description/</code>
+	/Set short description to helper
+<code class='code-inline'>—permanent —helper=/helper/ —get-short</code>
+	/Print short description for helper
+<code class='code-inline'>—permanent —helper=/helper/ —add-port=/portid/[-/portid/]//protocol/</code>
+	<i>Add a new port to the permanent helper.</i>
+<code class='code-inline'>—permanent —helper=/helper/ —remove-port=/portid/[-/portid/]//protocol/</code>
+	<i>Remove a port from the permanent helper.</i>
+<code class='code-inline'>—permanent —helper=/helper/ —query-port=/portid/[-/portid/]//protocol/</code>
+	<i>Return wether the port has been added to the permanent helper.</i>
+<code class='code-inline'>—permanent —helper=/helper/ —get-ports</code>
+	<i>List ports added to the permanent helper.</i>
+<code class='code-inline'>—permanent —helper=/helper/ —set-module=/description/</code>
+	/Set module description for helper
+<code class='code-inline'>—permanent —helper=/helper/ —get-module</code>
+	/Print module description for helper
+<code class='code-inline'>—permanent —helper=/helper/ —set-family=/description/</code>
+	/Set family description for helper
+<code class='code-inline'>—permanent —helper=/helper/ —get-family</code>
+	/Print family description of helper
+
+<h3 id="Direct Options">Direct Options</h3>
+The direct options give a more direct access to the firewall./ These options require user to know basic iptables concepts, i.<i>e.</i> table (filter<i>mangle</i>nat<i>…), chain (INPUT</i>OUTPUT<i>FORWARD</i>…), commands (-A<i>-D</i>-I<i>…), parameters (-p</i>-s<i>-d</i>-j<i>…) and targets (ACCEPT</i>DROP<i>REJECT</i>…)./
+
+<blockquote>
+The first argument of each option has to be ipv4 or ipv6 or eb./ With ipv4 it will be for IPv4 (iptables(8)), with ipv6 for IPv6 (ip6tables(8)) and with eb for ethernet bridges (ebtables(8))./
+</blockquote>
+ <code class='code-inline'>—direct —get-all-chains</code>
+	<i>Get all chains added to all tables.</i> This option concerns only chains previously added with `—direct —add-chain./
+ <code class='code-inline'>—direct —get-chains { ipv4 | ipv6 | eb } table</code>
+	<i>Get all chains added to table table as a space separated list.</i> This option concerns only chains previously added with `—direct —add-chain./
+ <code class='code-inline'>—direct —add-chain { ipv4 | ipv6 | eb } table chain</code>
+	<i>Add a new chain with name chain to table table.</i> Make sure there’s no other chain with this name already./
+	<i>There already exist basic chains to use with direct options, for example INPUT_direct chain (see iptables-save | grep direct output for all of them).</i> 
+ <code class='code-inline'>—direct —remove-chain { ipv4 | ipv6 | eb } table chain</code>
+	<i>Remove chain with name chain from table table.</i>
+ <code class='code-inline'>—direct —query-chain { ipv4 | ipv6 | eb } table chain</code>
+	<i>Return whether a chain with name chain exists in table table.</i> Returns 0 if true, 1 otherwise./
+<code class='code-inline'>—direct —add-chain</code>
+ <code class='code-inline'>—direct —get-all-rules</code>
+	<i>Get all rules added to all chains in all tables as a newline separated list of the priority and arguments.</i> 
+ `—direct —get-rules { ipv4 | ipv6 | eb } table chain
+	<i>Get all rules added to chain chain in table table as a newline separated list of the priority and arguments.</i> This option concerns only rules previously added with `—direct —add-rule./
+ `—direct —add-rule { ipv4 | ipv6 | eb } table chain priority $args
+	<i>Add a rule with the arguments $args to chain chain in table table with priority priority.</i>
+ <code class='code-inline'>—direct —remove-rule</code>
+	<i>Remove a rule with priority and the arguments $args from chain chain in table table.</i> 
+ <code class='code-inline'>—direct —remove-rules</code>
+	<i>Remove all rules in the chain with name chain exists in table table</i>
+ <code class='code-inline'>—direct —query-rule { ipv4 | ipv6 | eb } table chain priority $args</code>
+	<i>Return whether a rule with priority and the arguments $args exists in  chain in table table.</i> Returns 0 if true, 1 otherwise./ This option concerns only rules previously added with `—direct —add-rule./
+<code class='code-inline'>—direct —passthrough { ipv4 | ipv6 | eb } $args</code>
+	<i>Pass a command through to the firewall. $args can be all </i><b><i>iptables</i></b><i>, </i><b><i>ip6tables</i></b><i> and </i><b><i>ebtables</i></b><i> command line arguments.</i> This command is untracked, which means that firewalld is not able to provide information about this command later on, also not a listing of the untracked passthoughs./
+ <code class='code-inline'>—direct —get-all-passthroughs</code>
+	<i>Get all passthrough rules as a newline separated list of the ipv value and arguments.</i>
+ <code class='code-inline'>—direct —get-passthroughs { ipv4 | ipv6 | eb }</code>
+	<i>Get all passthrough rules for the ipv value as a newline separated list of the priority and arguments.</i>
+ <code class='code-inline'>—direct —add-passthrough { ipv4 | ipv6 | eb } $args</code>
+	<i>Add a passthrough rule with the arguments $args for the ipv value.</i>
+ <code class='code-inline'>—direct —remove-passthrough { ipv4 | ipv6 | eb } $args</code>
+	<i>Remove a passthrough rule with the arguments $args for the ipv value.</i>
+ <code class='code-inline'>—direct —query-passthrough { ipv4 | ipv6 | eb } $args</code>
+	<i>Return whether a passthrough rule with the arguments $args exists for the ipv value.</i> Returns 0 if true, 1 otherwise./
+
+<h3 id="Lockdown Options">Lockdown Options</h3>
+<i>Local applications or services are able to change the firewall configuration if they are running as root (example: libvirt) or are authenticated using PolicyKit.</i> With this feature administrators can lock the firewall configuration so that only applications on lockdown whitelist are able to request firewall changes./
+
+<blockquote>
+<i>The lockdown access check limits D-Bus methods that are changing firewall rules. Query, list and get methods are not limited.</i>
+</blockquote>
+
+<code class='code-inline'>—lockdown-on</code>
+	<i>Enable lockdown.</i> Be careful - if firewall-cmd is not on lockdown whitelist when you enable lockdown you won’t be able to disable it again with firewall-cmd, you would need to edit firewalld.conf
+<blockquote>
+This is a runtime and permanent change./
+</blockquote>
+<code class='code-inline'>—lockdown-off</code>
+	<i>Disable lockdown.</i>
+<blockquote>
+This is a runtime and permanent change./
+</blockquote>
+<code class='code-inline'>—query-lockdown</code>
+	<i>Query whether lockdown is enabled.</i> Returns 0 if lockdown is enabled, 1 otherwise./
+
+
+<h3 id="Panic Options">Panic Options</h3>
+<code class='code-inline'>—panic-on</code>
+	<i>Enable panic mode.</i> All incoming and outgoing packets are dropped, active connections will expire./ Enable this only if there are serious problems with your network environment./ For example if the machine is getting hacked in./
+<blockquote>
+This is a runtime only change./
+</blockquote>
+<code class='code-inline'>—panic-off</code>
+	<i>Disable panic mode.</i> After disabling panic mode established connections might work again, if panic mode was enabled for a short period of time./
+<blockquote>
+This is a runtime only change./
+</blockquote>
+<code class='code-inline'>—query-panic</code>
+	<i>Returns 0 if panic mode is enabled, 1 otherwise.</i>
+
+<h1 id="Examples">Examples</h1>
+For more examples see  <a href="http://fedoraproject.org/wiki/FirewallD">http://fedoraproject./org/wiki/FirewallD</a> 
+
+<h3 id="Example 1">Example 1</h3>
+Enable http service in default zone./ This is runtime only change, i.<i>e.</i> effective until restart./
+<pre><code class='code-multiline'>firewall-cmd `—add-service=http</code></pre>
+<p><br></p>
+<h3 id="Example 2">Example 2</h3>
+<p>Enable port 443/tcp immediately and permanently in default zone./ To make the change effective immediately and also after restart we need two commands./ The first command makes the change in runtime configuration, i.<i>e.</i> makes it effective immediately, until restart./ The second command makes the change in permanent configuration, i.<i>e.</i> makes it effective after restart./</p>
+<pre><code class='code-multiline'>firewall-cmd `—add-port=443/tcp
+firewall-cmd `—permanent —add-port=443/tcp</code></pre>
+<br>
+
+        </div>
+        <script type="text/javascript">
+            (function() {
+
+    var doc_ols = document.getElementsByTagName("ol");
+
+    for ( i=0; i<doc_ols.length; i++) {
+
+        var ol_start = doc_ols[i].getAttribute("start") - 1;
+        doc_ols[i].setAttribute("style", "counter-reset:ol_counter " + ol_start + ";");
+
+    }
+
+})();
+
+        </script>
+        <style>
+            html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font:inherit;font-size:100%;vertical-align:baseline}html{line-height:1}ol,ul{list-style:none}table{border-collapse:collapse;border-spacing:0}caption,th,td{text-align:left;font-weight:normal;vertical-align:middle}q,blockquote{quotes:none}q:before,q:after,blockquote:before,blockquote:after{content:"";content:none}a img{border:none}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}*{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}html{font-size:87.5%;line-height:1.57143em}html{font-size:14px;line-height:1.6em;-webkit-text-size-adjust:100%}body{background:#fcfcfc;color:#545454;text-rendering:optimizeLegibility;font-family:"AvenirNext-Regular"}a{color:#de4c4f;text-decoration:none}h1{font-family:"AvenirNext-Medium";color:#333;font-size:1.6em;line-height:1.3em;margin-bottom:.78571em}h2{font-family:"AvenirNext-Medium";color:#333;font-size:1.3em;line-height:1em;margin-bottom:.62857em}h3{font-family:"AvenirNext-Medium";color:#333;font-size:1.15em;line-height:1em;margin-bottom:.47143em}p{margin-bottom:1.57143em;hyphens:auto}hr{height:1px;border:0;background-color:#dedede;margin:-1px auto 1.57143em auto}ul,ol{margin-bottom:.31429em}ul ul,ul ol,ol ul,ol ol{margin-bottom:0px}ol{counter-reset:ol_counter}ol li:before{content:counter(ol_counter) ".";counter-increment:ol_counter;color:#e06e73;text-align:right;display:inline-block;min-width:1em;margin-right:0.5em}b,strong{font-family:"AvenirNext-Bold"}i,em{font-family:"AvenirNext-Italic"}code{font-family:"Menlo-Regular"}.text-overflow-ellipsis{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sf_code_string,.sf_code_selector,.sf_code_attr-name,.sf_code_char,.sf_code_builtin,.sf_code_inserted{color:#D33905}.sf_code_comment,.sf_code_prolog,.sf_code_doctype,.sf_code_cdata{color:#838383}.sf_code_number,.sf_code_boolean{color:#0E73A2}.sf_code_keyword,.sf_code_atrule,.sf_code_rule,.sf_code_attr-value,.sf_code_function,.sf_code_class-name,.sf_code_class,.sf_code_regex,.sf_code_important,.sf_code_variable,.sf_code_interpolation{color:#0E73A2}.sf_code_property,.sf_code_tag,.sf_code_constant,.sf_code_symbol,.sf_code_deleted{color:#1B00CE}.sf_code_macro,.sf_code_entity,.sf_code_operator,.sf_code_url{color:#920448}.note-wrapper{max-width:46em;margin:0px auto;padding:1.57143em 3.14286em}.note-wrapper.spotlight-preview{overflow-x:hidden}u{text-decoration:none;background-image:linear-gradient(to bottom, rgba(0,0,0,0) 50%,#e06e73 50%);background-repeat:repeat-x;background-size:2px 2px;background-position:0 1.05em}s{color:#878787}p{margin-bottom:0.1em}hr{margin-bottom:0.7em;margin-top:0.7em}ul li{text-indent:-0.35em}ul li:before{content:"•";color:#e06e73;display:inline-block;margin-right:0.3em}ul ul{margin-left:1.25714em}ol li{text-indent:-1.45em}ol ol{margin-left:1.25714em}blockquote{display:block;margin-left:-1em;padding-left:0.8em;border-left:0.2em solid #e06e73}.todo-list ul{margin-left:1.88571em}.todo-list li{text-indent:-1.75em}.todo-list li:before{content:"";display:static;margin-right:0px}.todo-checkbox{text-indent:-1.7em}.todo-checkbox svg{margin-right:0.3em;position:relative;top:0.2em}.todo-checkbox svg #check{display:none}.todo-checkbox.todo-checked #check{display:inline}.todo-checkbox.todo-checked+.todo-text{text-decoration:line-through;color:#878787}.code-inline{display:inline;background:white;border:solid 1px #dedede;padding:0.2em 0.5em;font-size:0.9em}.code-multiline{display:block;background:white;border:solid 1px #dedede;padding:0.7em 1em;font-size:0.9em;overflow-x:auto}.hashtag{display:inline-block;color:white;background:#b8bfc2;padding:0.0em 0.5em;border-radius:1em;text-indent:0}.hashtag a{color:#fff}.address a{color:#545454;background-image:linear-gradient(to bottom, rgba(0,0,0,0) 50%,#0da35e 50%);background-repeat:repeat-x;background-size:2px 2px;background-position:0 1.05em}.address svg{position:relative;top:0.2em;display:inline-block;margin-right:0.2em}.color-preview{display:inline-block;width:1em;height:1em;border:solid 1px rgba(0,0,0,0.3);border-radius:50%;margin-right:0.1em;position:relative;top:0.2em;white-space:nowrap}.color-code{margin-right:0.2em;font-family:"Menlo-Regular";font-size:0.9em}.color-hash{opacity:0.4}.ordered-list-number{color:#e06e73;text-align:right;display:inline-block;min-width:1em}.arrow svg{position:relative;top:0.08em;display:inline-block;margin-right:0.15em;margin-left:0.15em}.arrow svg #rod{stroke:#545454}.arrow svg #point{fill:#545454}mark{color:inherit;display:inline;padding:0.2em 0.5em;background-color:#fcffc0}img{max-width:100%;height:auto}
+
+        </style>
+    </body>
+</html>
